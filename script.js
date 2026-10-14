@@ -15,50 +15,32 @@
     clear: "Via aparentemente liberada",
   };
 
+  const $ = (id) => document.getElementById(id);
+
   const map = L.map("map").setView(center, 13);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>',
-  }).addTo(map);
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
+    }
+  ).addTo(map);
 
   const reportLayer = L.layerGroup().addTo(map);
 
   let selectedPoint = null;
   let selectionMarker = null;
 
-  const $ = (id) => document.getElementById(id);
-
   const escapeHtml = (value) =>
-    String(value ?? "").replace(
-      /[&<>"']/g,
-      (character) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        })[character],
-    );
-
-  const readReports = () => {
-    try {
-      return JSON.parse(
-        localStorage.getItem("alertaRioGrandeReports") || "[]",
-      );
-    } catch {
-      return [];
-    }
-  };
-
-  const saveReports = (data) => {
-    localStorage.setItem(
-      "alertaRioGrandeReports",
-      JSON.stringify(data),
-    );
-  };
+    String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    })[char]);
 
   const timeLabel = (date) =>
     new Date(date).toLocaleString("pt-BR", {
@@ -69,21 +51,34 @@
     });
 
   function toast(message) {
-    const toastElement = $("toast");
+    const element = $("toast");
 
-    toastElement.textContent = message;
-    toastElement.style.display = "block";
+    element.textContent = message;
+    element.style.display = "block";
 
     clearTimeout(toast.timer);
 
     toast.timer = setTimeout(() => {
-      toastElement.style.display = "none";
+      element.style.display = "none";
     }, 3200);
   }
 
-  function draw() {
-    const reports = readReports();
+  if (!window.ALERTA_CONFIG) {
+    alert("Configuração do Supabase não encontrada.");
+    return;
+  }
 
+  if (!window.supabase) {
+    alert("Biblioteca do Supabase não foi carregada.");
+    return;
+  }
+
+  const db = window.supabase.createClient(
+    window.ALERTA_CONFIG.SUPABASE_URL,
+    window.ALERTA_CONFIG.SUPABASE_PUBLISHABLE_KEY
+  );
+
+  function renderReports(reports) {
     reportLayer.clearLayers();
 
     reports.forEach((report) => {
@@ -91,61 +86,55 @@
         [report.lat, report.lng],
         {
           radius: 9,
-          color: "#ffffff",
+          color: "#fff",
           weight: 2,
-          fillColor: colors[report.severity] || colors.medium,
+          fillColor:
+            colors[report.severity] || colors.medium,
           fillOpacity: 0.95,
-        },
+        }
       ).addTo(reportLayer);
 
       marker.bindPopup(`
         <strong>${escapeHtml(report.street)}</strong><br>
-
         ${escapeHtml(
-          report.neighborhood || "Bairro não informado",
+          report.neighborhood || "Bairro não informado"
         )}<br>
 
         <b>
           ${escapeHtml(
-            labels[report.severity] || "Relato",
+            labels[report.severity] || "Relato"
           )}
         </b><br>
 
         ${escapeHtml(
-          report.details || "Sem detalhes adicionais",
+          report.details || "Sem detalhes adicionais"
         )}<br>
 
         <small>
-          Enviado em ${timeLabel(report.createdAt)} ·
-          relato comunitário não verificado
+          Enviado em ${timeLabel(report.created_at)}
+          · relato comunitário não verificado
         </small>
       `);
     });
 
-    const activeReports = reports.filter(
-      (report) => report.severity !== "clear",
+    const active = reports.filter(
+      (report) => report.severity !== "clear"
     );
 
-    $("activeCount").textContent = activeReports.length;
+    $("activeCount").textContent = active.length;
 
     $("highCount").textContent = reports.filter(
-      (report) => report.severity === "high",
+      (report) => report.severity === "high"
     ).length;
 
     $("lastUpdate").textContent = reports.length
-      ? timeLabel(
-          Math.max(
-            ...reports.map((report) =>
-              new Date(report.createdAt).getTime(),
-            ),
-          ),
-        )
+      ? timeLabel(reports[0].created_at)
       : "Sem relatos";
 
-    const reportsBox = $("reports");
+    const box = $("reports");
 
     if (!reports.length) {
-      reportsBox.innerHTML = `
+      box.innerHTML = `
         <div class="empty">
           Nenhum relato por enquanto.
           Seja o primeiro a informar uma ocorrência.
@@ -155,39 +144,40 @@
       return;
     }
 
-    reportsBox.innerHTML = [...reports]
-      .sort(
-        (firstReport, secondReport) =>
-          new Date(secondReport.createdAt) -
-          new Date(firstReport.createdAt),
-      )
+    box.innerHTML = reports
       .slice(0, 8)
       .map(
         (report) => `
           <article class="report">
+
             <div class="report-title">
+
               <span>
                 ${escapeHtml(report.street)}
               </span>
 
               <span class="badge ${report.severity}">
                 ${escapeHtml(
-                  labels[report.severity],
+                  labels[report.severity]
                 )}
               </span>
+
             </div>
 
             <p>
               ${escapeHtml(
                 report.neighborhood ||
-                  "Bairro não informado",
+                  "Bairro não informado"
               )}
-              · ${timeLabel(report.createdAt)}
+              ·
+              ${timeLabel(report.created_at)}
             </p>
 
             ${
               report.details
-                ? `<p>${escapeHtml(report.details)}</p>`
+                ? `<p>${escapeHtml(
+                    report.details
+                  )}</p>`
                 : ""
             }
 
@@ -199,12 +189,13 @@
             >
               Ver no mapa
             </button>
+
           </article>
-        `,
+        `
       )
       .join("");
 
-    reportsBox
+    box
       .querySelectorAll("button[data-lat]")
       .forEach((button) => {
         button.addEventListener("click", () => {
@@ -213,10 +204,33 @@
               Number(button.dataset.lat),
               Number(button.dataset.lng),
             ],
-            16,
+            16
           );
         });
       });
+  }
+
+  async function loadReports() {
+    const { data, error } = await db
+      .from("reports")
+      .select(
+        "id, street, neighborhood, severity, details, lat, lng, created_at"
+      )
+      .order("created_at", {
+        ascending: false,
+      });
+
+    if (error) {
+      console.error(error);
+
+      toast(
+        "Erro ao carregar os relatos."
+      );
+
+      return;
+    }
+
+    renderReports(data || []);
   }
 
   map.on("click", (event) => {
@@ -229,109 +243,146 @@
       map.removeLayer(selectionMarker);
     }
 
-    selectionMarker = L.marker(selectedPoint)
+    selectionMarker = L.marker(
+      selectedPoint
+    )
       .addTo(map)
       .bindPopup(
-        "Local selecionado para o próximo relato",
+        "Local selecionado para o próximo relato"
       )
       .openPopup();
 
     toast(
-      "Local selecionado. Preencha o formulário e publique o relato.",
+      "Local selecionado. Agora preencha o formulário."
     );
   });
 
   $("reportForm").addEventListener(
     "submit",
-    (event) => {
+    async (event) => {
       event.preventDefault();
 
-      const street = $("street").value.trim();
+      const street =
+        $("street").value.trim();
 
       if (!street) {
         return;
       }
 
-      const point = selectedPoint || center;
+      const point =
+        selectedPoint || center;
 
-      const reports = readReports();
+      const submitButton =
+        $("reportForm").querySelector(
+          'button[type="submit"]'
+        );
 
-      reports.push({
-        id:
-          Date.now().toString(36) +
-          Math.random().toString(36).slice(2, 7),
+      submitButton.disabled = true;
+      submitButton.textContent =
+        "Publicando...";
 
-        street,
+      const { error } = await db
+        .from("reports")
+        .insert({
+          street: street,
 
-        neighborhood:
-          $("neighborhood").value.trim(),
+          neighborhood:
+            $("neighborhood").value.trim() ||
+            null,
 
-        severity:
-          $("severity").value,
+          severity:
+            $("severity").value,
 
-        details:
-          $("details").value.trim(),
+          details:
+            $("details").value.trim() ||
+            null,
 
-        lat: point[0],
-        lng: point[1],
+          lat: point[0],
 
-        createdAt:
-          new Date().toISOString(),
-      });
+          lng: point[1],
+        });
 
-      saveReports(reports);
+      submitButton.disabled = false;
 
-      draw();
+      submitButton.textContent =
+        "Publicar relato no mapa";
+
+      if (error) {
+        console.error(error);
+
+        toast(
+          "Erro ao publicar o relato."
+        );
+
+        return;
+      }
 
       $("reportForm").reset();
 
       selectedPoint = null;
 
       if (selectionMarker) {
-        map.removeLayer(selectionMarker);
+        map.removeLayer(
+          selectionMarker
+        );
+
         selectionMarker = null;
       }
 
+      await loadReports();
+
       toast(
-        "Relato salvo neste navegador e exibido no mapa.",
+        "Relato publicado para todos!"
       );
-    },
+    }
   );
 
   $("centerMap").addEventListener(
     "click",
     () => {
       map.setView(center, 13);
-    },
+    }
   );
 
-  $("clearReports").addEventListener(
-    "click",
-    () => {
-      if (!readReports().length) {
-        toast("Não há relatos para limpar.");
-        return;
+  const updateButton =
+    $("refreshReports") ||
+    $("clearReports");
+
+  if (updateButton) {
+    updateButton.textContent =
+      "Atualizar";
+
+    updateButton.addEventListener(
+      "click",
+      async () => {
+        await loadReports();
+
+        toast(
+          "Relatos atualizados."
+        );
       }
+    );
+  }
 
-      const shouldClear = confirm(
-        "Apagar todos os relatos salvos neste navegador?",
-      );
-
-      if (shouldClear) {
-        saveReports([]);
-
-        draw();
-
-        toast("Relatos removidos.");
+  db
+    .channel("relatos-publicos")
+    .on(
+      "postgres_changes",
+      {
+        event: "*",
+        schema: "public",
+        table: "reports",
+      },
+      () => {
+        loadReports();
       }
-    },
+    )
+    .subscribe();
+
+  loadReports();
+
+  setInterval(
+    loadReports,
+    30000
   );
-
-  // Atualiza a interface periodicamente.
-  // Os dados continuam locais e não representam
-  // um feed oficial em tempo real.
-
-  setInterval(draw, 30000);
-
-  draw();
 })();
