@@ -1,6 +1,6 @@
 :root {
   --navy: #0b2545;
-  --blue: #1769aa;
+  --blue: #2d9410;
   --cyan: #dff5f8;
   --ink: #182536;
   --muted: #637386;
@@ -10,7 +10,7 @@
   --red: #d93b45;
   --orange: #e58a20;
   --yellow: #e5bc31;
-  --green: #21875b;
+  --green: #2b9567;
 }
 
 * {
@@ -30,7 +30,7 @@ body {
 }
 
 header {
-  background: linear-gradient(120deg, #0b2545, #155b83);
+  background: linear-gradient(120deg, #0b4516, #424b51);
   color: var(--white);
   padding: 24px max(18px, calc((100% - 1220px) / 2));
 }
@@ -177,7 +177,7 @@ a:focus-visible {
 }
 
 .primary:hover {
-  background: #125c96;
+  background: #5e6c5b;
 }
 
 .secondary {
@@ -365,7 +365,7 @@ textarea {
   gap: 10px;
   padding: 11px 0;
   border-bottom: 1px solid var(--line);
-  color: #155d91;
+  color: #0e8435;
   font-size: 13px;
   font-weight: 650;
   text-decoration: none;
@@ -409,7 +409,7 @@ footer {
   padding: 5px 9px;
   border-radius: 999px;
   background: #e8f4fb;
-  color: #155d91;
+  color: #249115;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -555,4 +555,27 @@ footer {
   .project-info {
     padding: 18px;
   }
+}
+
+.map-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+@media (max-width: 600px) {
+
+  .map-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+
+  .map-actions button {
+    flex: 1;
+  }
+
 }

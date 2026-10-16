@@ -1,278 +1,572 @@
 <!doctype html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b2545">
 
-  <title>Alerta Rio Grande | Mapa colaborativo</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
-  <link rel="preconnect" href="https://unpkg.com">
-  <link rel="preconnect" href="https://tile.openstreetmap.org">
+  <meta
+    name="theme-color"
+    content="#0b2545"
+  >
+
+  <title>
+    Alerta Rio Grande | Mapa colaborativo de lixo
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://unpkg.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://tile.openstreetmap.org"
+  >
 
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   >
-  <link rel="stylesheet" href="style.css">
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 </head>
 
 <body>
-  <header>
-    <div class="brand">
-      <div class="logo" aria-hidden="true">🌧️</div>
 
-      <div>
-        <h1>Alerta Rio Grande</h1>
-        <p>Mapa colaborativo de alagamentos e avisos importantes da cidade.</p>
-      </div>
-    </div>
-  </header>
+<header>
 
-  <main class="wrap">
-    <div class="notice">
-      <strong>Protótipo para demonstração:</strong>
-      os relatos enviados aqui ficam salvos somente neste navegador.
-      Ainda não existe conexão automática com uma base de dados da Prefeitura.
-      Confira a data e a fonte antes de tomar decisões de deslocamento.
+  <div class="brand">
+
+    <div
+      class="logo"
+      aria-hidden="true"
+    >
+      ♻️
     </div>
 
-    <section class="stats" aria-label="Resumo dos relatos">
-      <div class="stat">
-        <div class="label">Relatos ativos</div>
-        <div class="value" id="activeCount">0</div>
+    <div>
+
+      <h1>
+        Alerta Rio Grande
+      </h1>
+
+      <p>
+        Mapa colaborativo de pontos com
+        acúmulo de lixo e descarte irregular
+        na cidade.
+      </p>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<main class="wrap">
+
+  <div class="notice">
+
+    <strong>
+      Projeto colaborativo:
+    </strong>
+
+    os relatos enviados são compartilhados
+    entre os visitantes deste site.
+
+    As informações são comunitárias e podem
+    não ter sido verificadas oficialmente.
+
+  </div>
+
+
+  <section
+    class="stats"
+    aria-label="Resumo dos relatos"
+  >
+
+    <div class="stat">
+
+      <div class="label">
+        Pontos ativos
       </div>
 
-      <div class="stat">
-        <div class="label">Alagamentos graves</div>
-        <div class="value" id="highCount">0</div>
+      <div
+        class="value"
+        id="activeCount"
+      >
+        0
       </div>
 
-      <div class="stat">
-        <div class="label">Última atualização</div>
-        <div class="value last-update" id="lastUpdate">—</div>
-      </div>
-    </section>
+    </div>
 
-    <div class="layout">
-      <section class="panel">
-        <div class="panel-head">
-          <div>
-            <h2>🗺️ Mapa da cidade</h2>
-            <div class="sub">Clique em um marcador para ver os detalhes.</div>
+
+    <div class="stat">
+
+      <div class="label">
+        Pontos críticos
+      </div>
+
+      <div
+        class="value"
+        id="highCount"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="label">
+        Última atualização
+      </div>
+
+      <div
+        class="value last-update"
+        id="lastUpdate"
+      >
+        —
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <div class="layout">
+
+    <section class="panel">
+
+      <div class="panel-head">
+
+        <div>
+
+          <h2>
+            🗺️ Mapa da cidade
+          </h2>
+
+          <div class="sub">
+            Clique em um marcador para
+            visualizar o relato.
           </div>
 
-          <button class="secondary small" id="centerMap" type="button">
+        </div>
+
+
+        <div class="map-actions">
+
+          <button
+            class="secondary small"
+            id="locateMe"
+            type="button"
+          >
+            📍 Minha localização
+          </button>
+
+          <button
+            class="secondary small"
+            id="centerMap"
+            type="button"
+          >
             ◎ Centralizar
           </button>
+
         </div>
+
+      </div>
+
+
+      <div
+        id="map"
+        role="application"
+        aria-label="Mapa colaborativo de pontos com lixo em Rio Grande"
+      ></div>
+
+
+      <div class="map-foot">
 
         <div
-          id="map"
-          role="application"
-          aria-label="Mapa interativo de Rio Grande"
-        ></div>
+          class="legend"
+          aria-label="Legenda do mapa"
+        >
 
-        <div class="map-foot">
-          <div class="legend" aria-label="Legenda do mapa">
-            <span><i class="dot high-dot"></i>Grave</span>
-            <span><i class="dot medium-dot"></i>Moderado</span>
-            <span><i class="dot low-dot"></i>Ponto de atenção</span>
-            <span><i class="dot clear-dot"></i>Via liberada</span>
+          <span>
+            <i class="dot high-dot"></i>
+            Crítico
+          </span>
+
+          <span>
+            <i class="dot medium-dot"></i>
+            Moderado
+          </span>
+
+          <span>
+            <i class="dot low-dot"></i>
+            Pequeno acúmulo
+          </span>
+
+          <span>
+            <i class="dot clear-dot"></i>
+            Local limpo
+          </span>
+
+        </div>
+
+        <span>
+          Mapa: OpenStreetMap
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <aside class="side">
+
+      <section class="panel">
+
+        <div class="panel-head">
+
+          <div>
+
+            <h2>
+              ＋ Informar ponto com lixo
+            </h2>
+
+            <div class="sub">
+              Ajude a identificar locais
+              que precisam de atenção.
+            </div>
+
           </div>
 
-          <span>Mapa: OpenStreetMap</span>
         </div>
+
+
+        <form
+          class="form"
+          id="reportForm"
+        >
+
+          <label for="street">
+            Rua ou local
+          </label>
+
+          <input
+            id="street"
+            name="street"
+            type="text"
+            required
+            maxlength="100"
+            placeholder="Ex.: Rua Marechal Floriano"
+          >
+
+
+          <div class="row">
+
+            <div>
+
+              <label for="severity">
+                Situação
+              </label>
+
+              <select
+                id="severity"
+                name="severity"
+                required
+              >
+
+                <option value="high">
+                  Ponto crítico de lixo
+                </option>
+
+                <option
+                  value="medium"
+                  selected
+                >
+                  Acúmulo moderado
+                </option>
+
+                <option value="low">
+                  Pequeno acúmulo
+                </option>
+
+                <option value="clear">
+                  Local limpo / lixo recolhido
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div>
+
+              <label for="neighborhood">
+                Bairro
+              </label>
+
+              <input
+                id="neighborhood"
+                name="neighborhood"
+                type="text"
+                maxlength="70"
+                placeholder="Opcional"
+              >
+
+            </div>
+
+          </div>
+
+
+          <label for="details">
+            Detalhes
+          </label>
+
+          <textarea
+            id="details"
+            name="details"
+            maxlength="300"
+            placeholder="Ex.: sacos de lixo acumulados, móveis descartados, entulho..."
+          ></textarea>
+
+
+          <div class="help">
+
+            Clique no mapa para marcar o ponto
+            exato do lixo ou use o botão
+
+            <strong>
+              Minha localização
+            </strong>
+
+            para marcar sua posição atual.
+
+          </div>
+
+
+          <button
+            class="primary full-width"
+            type="submit"
+          >
+            Publicar ponto no mapa
+          </button>
+
+        </form>
+
       </section>
 
-      <aside class="side">
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>＋ Informar ocorrência</h2>
-              <div class="sub">Ajude outros moradores a se orientar.</div>
+
+      <section class="panel">
+
+        <div class="panel-head">
+
+          <div>
+
+            <h2>
+              🗑️ Relatos recentes
+            </h2>
+
+            <div class="sub">
+              Pontos compartilhados entre
+              todos os visitantes.
             </div>
+
           </div>
 
-          <form class="form" id="reportForm">
-            <label for="street">Rua ou local</label>
-            <input
-              id="street"
-              name="street"
-              type="text"
-              required
-              maxlength="100"
-              placeholder="Ex.: Rua Marechal Floriano"
-            >
+          <button
+            class="secondary small"
+            id="refreshReports"
+            type="button"
+          >
+            Atualizar
+          </button>
 
-            <div class="row">
-              <div>
-                <label for="severity">Situação</label>
+        </div>
 
-                <select id="severity" name="severity" required>
-                  <option value="high">Alagamento grave</option>
-                  <option value="medium" selected>Alagamento moderado</option>
-                  <option value="low">Ponto de atenção</option>
-                  <option value="clear">Via aparentemente liberada</option>
-                </select>
-              </div>
 
-              <div>
-                <label for="neighborhood">Bairro</label>
+        <div
+          class="reports"
+          id="reports"
+        >
 
-                <input
-                  id="neighborhood"
-                  name="neighborhood"
-                  type="text"
-                  maxlength="70"
-                  placeholder="Opcional"
-                >
-              </div>
-            </div>
-
-            <label for="details">Detalhes (opcional)</label>
-
-            <textarea
-              id="details"
-              name="details"
-              maxlength="300"
-              placeholder="Ex.: água na calçada, carros com dificuldade..."
-            ></textarea>
-
-            <div class="help">
-              O ponto será colocado aproximadamente no centro do mapa.
-              Para marcar o local exato, clique no mapa antes de enviar.
-            </div>
-
-            <button class="primary full-width" type="submit">
-              Publicar relato no mapa
-            </button>
-          </form>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>📍 Relatos recentes</h2>
-              <div class="sub">Registros guardados neste dispositivo.</div>
-            </div>
-
-            <button class="secondary small" id="clearReports" type="button">
-              Limpar
-            </button>
+          <div class="empty">
+            Carregando relatos...
           </div>
 
-          <div class="reports" id="reports">
-            <div class="empty">
-              Nenhum relato por enquanto. Os relatos de demonstração não são
-              carregados automaticamente.
+        </div>
+
+      </section>
+
+
+      <section class="panel">
+
+        <div class="panel-head">
+
+          <div>
+
+            <h2>
+              🔎 Informação oficial
+            </h2>
+
+            <div class="sub">
+              Consulte os canais oficiais
+              do município.
             </div>
-          </div>
-        </section>
 
-        <section class="panel">
-          <div class="panel-head">
-            <div>
-              <h2>🔎 Fontes oficiais</h2>
-              <div class="sub">Consulte avisos e previsões publicados.</div>
-            </div>
           </div>
 
-          <div class="sources">
-            <a
-              class="source-link"
-              href="https://www.riogrande.rs.gov.br/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Prefeitura do Rio Grande <span>↗</span>
-            </a>
+        </div>
 
-            <a
-              class="source-link"
-              href="https://defesacivil.rs.gov.br/avisos-e-alertas/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Defesa Civil do RS — alertas <span>↗</span>
-            </a>
 
-            <a
-              class="source-link"
-              href="https://defesacivil.rs.gov.br/avisos-e-boletins"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Boletins hidrometeorológicos <span>↗</span>
-            </a>
+        <div class="sources">
 
-            <p class="help source-note">
-              Avisos meteorológicos indicam risco previsto e não confirmam,
-              por si só, que uma rua esteja alagada.
-            </p>
-          </div>
-        </section>
-      </aside>
+          <a
+            class="source-link"
+            href="https://www.riogrande.rs.gov.br/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Prefeitura do Rio Grande
+            <span>↗</span>
+          </a>
+
+          <p class="help source-note">
+
+            Este mapa é colaborativo e não
+            substitui os canais oficiais
+            responsáveis pela coleta,
+            limpeza urbana ou fiscalização.
+
+          </p>
+
+        </div>
+
+      </section>
+
+    </aside>
+
+  </div>
+
+</main>
+
+
+<footer>
+
+  <section
+    class="project-info"
+    aria-labelledby="project-title"
+  >
+
+    <div class="project-heading">
+
+      <span class="project-tag">
+        Projeto educativo
+      </span>
+
+      <h2 id="project-title">
+        Inovamente — Escola Lemos Júnior
+      </h2>
+
+      <p>
+        Site desenvolvido como projeto
+        escolar educativo para apresentar
+        uma proposta de mapa colaborativo
+        de identificação de pontos com
+        acúmulo de lixo e descarte irregular
+        em Rio Grande.
+      </p>
+
     </div>
-  </main>
 
-  <footer>
-    <section class="project-info" aria-labelledby="project-title">
-      <div class="project-heading">
-        <span class="project-tag">Projeto educativo</span>
 
-        <h2 id="project-title">
-          Inovamente — Escola Lemos Júnior
-        </h2>
-
-        <p>
-          Site desenvolvido como projeto escolar educativo para apresentar uma
-          proposta de mapa colaborativo de alertas e alagamentos em Rio Grande.
-        </p>
-      </div>
-
-      <div class="project-details">
-        <div>
-          <strong>Disciplina / Projeto</strong>
-          <span>Inovamente</span>
-        </div>
-
-        <div>
-          <strong>Escola</strong>
-          <span>Lemos Júnior</span>
-        </div>
-      </div>
+    <div class="project-details">
 
       <div>
-          <strong>Nome do Projeto</strong>
-          <span>Mapa colaborativo digital</span>
-        </div>
+
+        <strong>
+          Disciplina / Projeto
+        </strong>
+
+        <span>
+          Inovamente
+        </span>
+
       </div>
 
-      <div class="team">
-        <strong>Integrantes</strong>
 
-        <div class="team-list">
-          <span>Maya</span>
-          <span>Livia</span>
-          <span>Rennan</span>
-          <span>Eduarda</span>
-          <span>Gabriel</span>
-          <span>Nicolas</span>
-        </div>
+      <div>
+
+        <strong>
+          Escola
+        </strong>
+
+        <span>
+          Lemos Júnior
+        </span>
+
       </div>
 
-      <p class="footer-warning">
-        Projeto demonstrativo para trabalho escolar. Não é um canal oficial de
-        emergência. Não atravesse ruas inundadas. Em situação de emergência,
-        siga as orientações da Defesa Civil e dos serviços públicos.
-      </p>
-    </section>
-  </footer>
+    </div>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script
+    <div class="team">
+
+      <strong>
+        Integrantes
+      </strong>
+
+      <div class="team-list">
+
+        <span>Maya</span>
+        <span>Livia</span>
+        <span>Rennan</span>
+        <span>Eduarda</span>
+        <span>Gabriel</span>
+        <span>Nicolas</span>
+
+      </div>
+
+    </div>
+
+
+    <p class="footer-warning">
+
+      Projeto demonstrativo para trabalho
+      escolar.
+
+      Este site não representa um serviço
+      oficial de coleta ou fiscalização.
+
+      Para solicitações oficiais, consulte
+      os canais da Prefeitura do Rio Grande.
+
+    </p>
+
+  </section>
+
+</footer>
+
+
+<div
+  class="toast"
+  id="toast"
+  role="status"
+  aria-live="polite"
+></div>
+
+
+<script
   src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   defer
 ></script>
@@ -293,4 +587,5 @@
 ></script>
 
 </body>
+
 </html>
