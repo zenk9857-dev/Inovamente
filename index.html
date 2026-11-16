@@ -1,42 +1,22 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta
-    name="theme-color"
-    content="#0b2545"
-  >
+  <meta name="theme-color" content="#0b2545">
 
-  <title>
-    Cadê a limpeza | Mapa colaborativo de lixo
-  </title>
-
-  <link
-    rel="preconnect"
-    href="https://unpkg.com"
-  >
-
-  <link
-    rel="preconnect"
-    href="https://tile.openstreetmap.org"
-  >
+  <title>Alerta Rio Grande | Inovamente</title>
 
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   >
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -45,25 +25,15 @@
 
   <div class="brand">
 
-    <div
-      class="logo"
-      aria-hidden="true"
-    >
-      ♻️
-    </div>
+    <div class="logo">♻️</div>
 
     <div>
-
-      <h1>
-        Cadê a limpeza?
-      </h1>
+      <h1>Alerta Rio Grande</h1>
 
       <p>
-        Mapa colaborativo de pontos com
-        acúmulo de lixo e descarte irregular
-        na cidade.
+        Mapa colaborativo de pontos com acúmulo de lixo
+        e descarte irregular.
       </p>
-
     </div>
 
   </div>
@@ -75,69 +45,32 @@
 
   <div class="notice">
 
-    <strong>
-      Projeto colaborativo:
-    </strong>
+    <strong>Projeto colaborativo:</strong>
 
-    os relatos enviados são compartilhados
-    entre os visitantes deste site.
+    Ajude a identificar locais com acúmulo de lixo
+    e contribua para uma cidade mais limpa.
 
-    As informações são comunitárias e podem
-    não ter sido verificadas oficialmente.
+    Os relatos são enviados pela comunidade e
+    não representam confirmações oficiais.
 
   </div>
 
 
-  <section
-    class="stats"
-    aria-label="Resumo dos relatos"
-  >
+  <section class="stats">
 
     <div class="stat">
-
-      <div class="label">
-        Pontos ativos
-      </div>
-
-      <div
-        class="value"
-        id="activeCount"
-      >
-        0
-      </div>
-
+      <div class="label">Pontos ativos</div>
+      <div class="value" id="activeCount">0</div>
     </div>
 
-
     <div class="stat">
-
-      <div class="label">
-        Pontos críticos
-      </div>
-
-      <div
-        class="value"
-        id="highCount"
-      >
-        0
-      </div>
-
+      <div class="label">Pontos críticos</div>
+      <div class="value" id="highCount">0</div>
     </div>
 
-
     <div class="stat">
-
-      <div class="label">
-        Última atualização
-      </div>
-
-      <div
-        class="value last-update"
-        id="lastUpdate"
-      >
-        —
-      </div>
-
+      <div class="label">Última atualização</div>
+      <div class="value last-update" id="lastUpdate">—</div>
     </div>
 
   </section>
@@ -150,18 +83,12 @@
       <div class="panel-head">
 
         <div>
-
-          <h2>
-            🗺️ Mapa da cidade
-          </h2>
+          <h2>🗺️ Mapa da cidade</h2>
 
           <div class="sub">
-            Clique em um marcador para
-            visualizar o relato.
+            Clique em um marcador para visualizar o relato.
           </div>
-
         </div>
-
 
         <div class="map-actions">
 
@@ -189,16 +116,13 @@
       <div
         id="map"
         role="application"
-        aria-label="Mapa colaborativo de pontos com lixo em Rio Grande"
+        aria-label="Mapa colaborativo de Rio Grande"
       ></div>
 
 
       <div class="map-foot">
 
-        <div
-          class="legend"
-          aria-label="Legenda do mapa"
-        >
+        <div class="legend">
 
           <span>
             <i class="dot high-dot"></i>
@@ -222,9 +146,7 @@
 
         </div>
 
-        <span>
-          Mapa: OpenStreetMap
-        </span>
+        <span>Mapa: OpenStreetMap</span>
 
       </div>
 
@@ -233,34 +155,27 @@
 
     <aside class="side">
 
+
+      <!-- FORMULÁRIO DE RELATOS -->
+
       <section class="panel">
 
         <div class="panel-head">
 
           <div>
-
-            <h2>
-              ＋ Informar ponto com lixo
-            </h2>
+            <h2>＋ Informar ponto com lixo</h2>
 
             <div class="sub">
-              Ajude a identificar locais
-              que precisam de atenção.
+              Ajude a identificar locais que precisam de atenção.
             </div>
-
           </div>
 
         </div>
 
 
-        <form
-          class="form"
-          id="reportForm"
-        >
+        <form class="form" id="reportForm">
 
-          <label for="street">
-            Rua ou local
-          </label>
+          <label for="street">Rua ou local</label>
 
           <input
             id="street"
@@ -276,24 +191,15 @@
 
             <div>
 
-              <label for="severity">
-                Situação
-              </label>
+              <label for="severity">Situação</label>
 
-              <select
-                id="severity"
-                name="severity"
-                required
-              >
+              <select id="severity" name="severity" required>
 
                 <option value="high">
                   Ponto crítico de lixo
                 </option>
 
-                <option
-                  value="medium"
-                  selected
-                >
+                <option value="medium" selected>
                   Acúmulo moderado
                 </option>
 
@@ -312,9 +218,7 @@
 
             <div>
 
-              <label for="neighborhood">
-                Bairro
-              </label>
+              <label for="neighborhood">Bairro</label>
 
               <input
                 id="neighborhood"
@@ -329,28 +233,20 @@
           </div>
 
 
-          <label for="details">
-            Detalhes
-          </label>
+          <label for="details">Detalhes</label>
 
           <textarea
             id="details"
             name="details"
             maxlength="300"
-            placeholder="Ex.: sacos de lixo acumulados, móveis descartados, entulho..."
+            placeholder="Descreva o tipo e a quantidade de lixo encontrados..."
           ></textarea>
 
 
           <div class="help">
 
-            Clique no mapa para marcar o ponto
-            exato do lixo ou use o botão
-
-            <strong>
-              Minha localização
-            </strong>
-
-            para marcar sua posição atual.
+            Clique no mapa para marcar o local exato
+            ou utilize o botão Minha localização.
 
           </div>
 
@@ -367,21 +263,18 @@
       </section>
 
 
+      <!-- RELATOS RECENTES -->
+
       <section class="panel">
 
         <div class="panel-head">
 
           <div>
-
-            <h2>
-              🗑️ Relatos recentes
-            </h2>
+            <h2>🗑️ Relatos recentes</h2>
 
             <div class="sub">
-              Pontos compartilhados entre
-              todos os visitantes.
+              Pontos compartilhados entre os visitantes.
             </div>
-
           </div>
 
           <button
@@ -395,10 +288,7 @@
         </div>
 
 
-        <div
-          class="reports"
-          id="reports"
-        >
+        <div class="reports" id="reports">
 
           <div class="empty">
             Carregando relatos...
@@ -409,50 +299,250 @@
       </section>
 
 
+      <!-- PREVENÇÃO DE FALSOS RELATOS -->
+
       <section class="panel">
 
         <div class="panel-head">
+          <h2>🛡️ Denúncia de falsos relatos</h2>
+        </div>
 
-          <div>
+        <div class="info-card">
 
-            <h2>
-              🔎 Informação oficial
-            </h2>
+          <p>
+            A confiabilidade das informações é importante
+            para o funcionamento do projeto.
+          </p>
 
-            <div class="sub">
-              Consulte os canais oficiais
-              do município.
-            </div>
+          <p>
+            Se encontrar um relato falso, duplicado,
+            com localização incorreta ou que já foi resolvido,
+            utilize o botão de denúncia disponível em cada relato.
+          </p>
 
+          <p>
+            A equipe do projeto poderá analisar a informação
+            e verificar a necessidade de correção.
+          </p>
+
+          <div class="help">
+            As denúncias são encaminhadas para análise.
+            Nenhum relato é apagado automaticamente.
           </div>
 
         </div>
 
+      </section>
 
-        <div class="sources">
+
+      <!-- DIAS E HORÁRIOS DA COLETA -->
+
+      <section class="panel">
+
+        <div class="panel-head">
+          <h2>🚛 Dias e horários da coleta</h2>
+        </div>
+
+
+        <div class="collection-list">
+
+
+          <article class="collection-card">
+
+            <h3>Coleta domiciliar</h3>
+
+            <p>
+              Recolhimento regular dos resíduos domésticos.
+              Os dias e horários dependem da região e do roteiro
+              estabelecido pelo município.
+            </p>
+
+            <span class="collection-tag">
+              Consulte o roteiro do seu bairro
+            </span>
+
+          </article>
+
+
+          <article class="collection-card">
+
+            <h3>Coleta seletiva</h3>
+
+            <p>
+              Serviço destinado aos materiais recicláveis,
+              como papel, papelão, plástico, vidro e metal.
+              Consulte os horários e locais atendidos.
+            </p>
+
+            <span class="collection-tag">
+              Consulte a programação oficial
+            </span>
+
+          </article>
+
+
+          <article class="collection-card">
+
+            <h3>Coleta programada</h3>
+
+            <p>
+              Serviço destinado a materiais volumosos,
+              como móveis velhos, madeiras, eletrodomésticos,
+              pequenos resíduos de construção e podas.
+            </p>
+
+            <span class="collection-tag">
+              Calendário sujeito a alterações
+            </span>
+
+          </article>
+
+
+        </div>
+
+
+        <div class="help collection-warning">
+
+          <strong>Atenção:</strong>
+
+          A coleta programada não substitui a coleta
+          domiciliar nem a seletiva.
+
+          Antes de colocar materiais na rua, consulte
+          a programação atualizada da Prefeitura.
+
+        </div>
+
+
+        <div class="official-links">
 
           <a
-            class="source-link"
-            href="https://www.riogrande.rs.gov.br/"
+            class="action-link"
+            href="https://riogrande.rs.gov.br/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Prefeitura do Rio Grande
-            <span>↗</span>
+            Consultar Prefeitura ↗
           </a>
 
-          <p class="help source-note">
+          <a
+            class="action-link"
+            href="https://wa.me/5553991150181"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp Serviços Urbanos ↗
+          </a>
 
-            Este mapa é colaborativo e não
-            substitui os canais oficiais
-            responsáveis pela coleta,
-            limpeza urbana ou fiscalização.
+        </div>
 
+      </section>
+
+
+      <!-- CONTATO DO PROJETO -->
+
+      <section class="panel contact-panel">
+
+        <div class="panel-head">
+          <h2>💬 Dúvidas e informações</h2>
+        </div>
+
+
+        <div class="contact-card">
+
+          <p>
+            Qualquer dúvida sobre o funcionamento,
+            os relatos ou o projeto, entre em contato:
+          </p>
+
+          <h3>Eduarda Dutra</h3>
+
+          <div class="contact-number">
+            (53) 99204-8862
+          </div>
+
+          <a
+            class="action-link contact-button"
+            href="https://wa.me/5553992048862?text=Ol%C3%A1%2C%20Eduarda!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20projeto%20Alerta%20Rio%20Grande."
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Conversar pelo WhatsApp</span>
+            ↗
+          </a>
+
+        </div>
+
+      </section>
+
+
+      <!-- VÍNCULO COM A PREFEITURA -->
+
+      <section class="panel">
+
+        <div class="panel-head">
+          <h2>🏛️ Serviços públicos municipais</h2>
+        </div>
+
+
+        <div class="info-card">
+
+          <p>
+            Para informações sobre limpeza urbana,
+            coleta de resíduos e serviços municipais,
+            consulte diretamente os canais oficiais.
+          </p>
+
+          <div class="municipal-contact">
+
+            <strong>
+              Secretaria de Município de Serviços Urbanos
+            </strong>
+
+            <span>
+              SMSU — Rio Grande/RS
+            </span>
+
+            <span>
+              WhatsApp: (53) 99115-0181
+            </span>
+
+          </div>
+
+
+          <div class="official-links">
+
+            <a
+              class="action-link"
+              href="https://wa.me/5553991150181"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Falar com a SMSU ↗
+            </a>
+
+            <a
+              class="action-link"
+              href="https://riogrande.rs.gov.br/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Site da Prefeitura ↗
+            </a>
+
+          </div>
+
+          <p class="help">
+            O Alerta Rio Grande é um projeto educativo
+            independente. Não representa um canal oficial
+            da Prefeitura nem afirma possuir parceria
+            institucional com o município.
           </p>
 
         </div>
 
       </section>
+
 
     </aside>
 
@@ -461,12 +551,11 @@
 </main>
 
 
+<!-- RODAPÉ DO PROJETO -->
+
 <footer>
 
-  <section
-    class="project-info"
-    aria-labelledby="project-title"
-  >
+  <section class="project-info">
 
     <div class="project-heading">
 
@@ -474,17 +563,14 @@
         Projeto educativo
       </span>
 
-      <h2 id="project-title">
+      <h2>
         Inovamente — Escola Lemos Júnior
       </h2>
 
       <p>
-        Site desenvolvido como projeto
-        escolar educativo para apresentar
-        uma proposta de mapa colaborativo
-        de identificação de pontos com
-        acúmulo de lixo e descarte irregular
-        em Rio Grande.
+        Projeto escolar educativo que apresenta uma proposta
+        de mapa colaborativo para identificar pontos com
+        acúmulo de lixo e descarte irregular em Rio Grande.
       </p>
 
     </div>
@@ -493,28 +579,13 @@
     <div class="project-details">
 
       <div>
-
-        <strong>
-          Disciplina / Projeto
-        </strong>
-
-        <span>
-          Inovamente
-        </span>
-
+        <strong>Disciplina / Projeto</strong>
+        <span>Inovamente</span>
       </div>
 
-
       <div>
-
-        <strong>
-          Escola
-        </strong>
-
-        <span>
-          Lemos Júnior
-        </span>
-
+        <strong>Escola</strong>
+        <span>Lemos Júnior</span>
       </div>
 
     </div>
@@ -522,19 +593,15 @@
 
     <div class="team">
 
-      <strong>
-        Integrantes
-      </strong>
+      <strong>Integrantes</strong>
 
       <div class="team-list">
-
         <span>Maya</span>
         <span>Livia</span>
         <span>Rennan</span>
         <span>Eduarda</span>
         <span>Gabriel</span>
         <span>Nicolas</span>
-
       </div>
 
     </div>
@@ -542,14 +609,10 @@
 
     <p class="footer-warning">
 
-      Projeto demonstrativo para trabalho
-      escolar.
+      Projeto demonstrativo para fins educativos.
 
-      Este site não representa um serviço
-      oficial de coleta ou fiscalização.
-
-      Para solicitações oficiais, consulte
-      os canais da Prefeitura do Rio Grande.
+      Os relatos são comunitários e não substituem
+      os canais oficiais da Prefeitura.
 
     </p>
 
@@ -576,16 +639,9 @@
   defer
 ></script>
 
-<script
-  src="config.js"
-  defer
-></script>
+<script src="config.js" defer></script>
 
-<script
-  src="script.js"
-  defer
-></script>
+<script src="script.js" defer></script>
 
 </body>
-
 </html>

@@ -579,3 +579,206 @@ footer {
   }
 
 }
+
+
+/* =====================================
+   NOVAS SEÇÕES - INOVAMENTE
+===================================== */
+
+
+/* COLETA DE LIXO */
+
+.collection-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.collection-card {
+  padding: 15px;
+  border: 1px solid #dce5e9;
+  border-radius: 12px;
+  background: #f8fafb;
+}
+
+.collection-card h3 {
+  margin: 0 0 8px;
+  color: #173b35;
+  font-size: 16px;
+}
+
+.collection-card p {
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #53636a;
+}
+
+.collection-tag {
+  display: inline-block;
+  padding: 6px 9px;
+  border-radius: 20px;
+  background: #e1eee8;
+  color: #246247;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.collection-warning {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff6e5;
+  color: #79551c;
+  line-height: 1.6;
+}
+
+
+/* LINKS OFICIAIS */
+
+.official-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 15px;
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 13px;
+  border: 1px solid #cbded3;
+  border-radius: 9px;
+  background: #eaf3ed;
+  color: #245c3d;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.action-link:hover {
+  background: #d9eade;
+  transform: translateY(-1px);
+}
+
+
+/* DENÚNCIA DE RELATOS */
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.danger-link {
+  background: #fff0ed;
+  color: #a43c32;
+  border-color: #f0d1cc;
+}
+
+.danger-link:hover {
+  background: #ffe0db;
+}
+
+
+/* INFORMAÇÕES */
+
+.info-card {
+  padding: 14px;
+  border-radius: 12px;
+  background: #f8fafb;
+  border: 1px solid #dce5e9;
+}
+
+.info-card p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #53636a;
+  margin: 0 0 12px;
+}
+
+.info-card p:last-child {
+  margin-bottom: 0;
+}
+
+.municipal-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 13px;
+  border-radius: 10px;
+  background: #eaf3ed;
+  color: #245c3d;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+
+/* CONTATO EDUARDA */
+
+.contact-card {
+  padding: 17px;
+  border-radius: 12px;
+  background: #edf5f0;
+  border: 1px solid #d4e6da;
+}
+
+.contact-card p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #53636a;
+}
+
+.contact-card h3 {
+  margin: 12px 0 5px;
+  color: #173b35;
+  font-size: 20px;
+}
+
+.contact-number {
+  font-size: 17px;
+  font-weight: 700;
+  color: #246247;
+  margin-bottom: 15px;
+}
+
+.contact-button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+}
+
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 600px) {
+
+  .official-links {
+    flex-direction: column;
+  }
+
+  .official-links .action-link {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .report-actions {
+    flex-direction: column;
+  }
+
+  .report-actions .action-link,
+  .report-actions button {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .collection-card {
+    padding: 12px;
+  }
+
+}
